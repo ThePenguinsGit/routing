@@ -48,14 +48,31 @@ resource "hcloud_server" "proxies" {
     ipv6 = hcloud_primary_ip.v6[each.key].id
   }
   ssh_keys = [hcloud_ssh_key.admin.id]
+  provisioner "file" {
+    source      = "mc-router"
+    destination = "/usr/bin/mc-router"
+    connection {
+      type        = "ssh"
+      user        = "root"
+      host        = self.ipv4_address
+      private_key = file(var.ssh_private_key)
+    }
+  }
+  provisioner "file" {
+    source      = "mc-router.service"
+    destination = "/etc/systemd/system/mc-router.service"
+    connection {
+      type        = "ssh"
+      user        = "root"
+      host        = self.ipv4_address
+      private_key = file(var.ssh_private_key)
+    }
+  }
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y docker.io docker-compose",
-      "sudo usermod -aG docker $USER",
-      "sudo systemctl enable docker",
-      "sudo systemctl start docker",
-      "cd /root && wget https://raw.githubusercontent.com/ThePenguinsGit/routing/refs/heads/main/compose.yml && docker compose up -d"
+      "chmod +x /usr/bin/mc-router",
+      "systemctl daemon-reload",
+      "systemctl enable --now mc-router",
     ]
     connection {
       type        = "ssh"

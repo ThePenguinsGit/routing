@@ -1,0 +1,19 @@
+[Unit]
+Description=MC-Router
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mc-router -default 49.12.99.215:25563 -use-proxy-protocol
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mc-router
+User=root
+Group=root
+Environment=PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+
+
+[Install]
+WantedBy=multi-user.target
