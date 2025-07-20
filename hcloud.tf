@@ -55,7 +55,7 @@ resource "hcloud_server" "proxies" {
       "sudo usermod -aG docker $USER",
       "sudo systemctl enable docker",
       "sudo systemctl start docker",
-      "cd "
+      "cd /root && wget https://raw.githubusercontent.com/ThePenguinsGit/routing/refs/heads/main/compose.yml && docker compose up -d"
     ]
     connection {
       type        = "ssh"
