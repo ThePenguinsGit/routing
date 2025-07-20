@@ -1,0 +1,6 @@
+services:
+  router:
+    image: itzg/mc-router:latest
+    command: "-default 49.12.99.215:25565 -use-proxy-protocol"
+    ports:
+      - "25565:25565"
