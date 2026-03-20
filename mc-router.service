@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/mc-router -default 49.12.99.215:25563 -use-proxy-protocol
+ExecStart=/usr/bin/mc-router -default 46.41.49.2:25564 -use-proxy-protocol
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
 StandardOutput=journal
